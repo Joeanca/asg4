@@ -1,7 +1,6 @@
 
 import java.io.*;
 import java.util.*;
-
 /**
  * This is a file reader that accounts for the amount of words, removes stop
  * words predefined in an array and accounts for repeated words by keepin a
