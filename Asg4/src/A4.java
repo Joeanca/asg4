@@ -124,11 +124,6 @@ public class A4 {
 		System.out.println("The average word length " + avgWordLength);
 		System.out.println("\n------\n\nAll Words");
 		wordList.inOrder();
-		
-		
-		
-
-
-		
+	
 	}
 }
