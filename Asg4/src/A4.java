@@ -19,6 +19,8 @@ public class A4 {
 	BST<Word> wordList = new BST<Word>();
 	BST<Word> lengthList = new BST<Word>();
 	BST<Word> countList = new BST<Word>();
+	Queue<Word> q = new LinkedList<Word>();
+	Stack<Word> s = new Stack<Word>();
 	private String[] stopWords = { "a", "about", "all", "am", "an", "and", "any", "are", "as", "at", "be", "been",
 			"but", "by", "can", "cannot", "could", "did", "do", "does", "else", "for", "from", "get", "got", "had",
 			"has", "have", "he", "her", "hers", "him", "his", "how", "i", "if", "in", "into", "is", "it", "its", "like",
@@ -85,7 +87,9 @@ public class A4 {
 		int totalLength = 0;
 		for (Word x : nodes) {
 			totalLength+=x.length;
+			if (x.length>2){
 			lengthList.add(x, x.LENGTH_ORDER);
+			}
 		}
 		wordLength = totalLength/lengthList.size();
 		buildCountList();
@@ -95,15 +99,16 @@ public class A4 {
 	private void buildCountList() {
 		
 		for (Word x : nodes) {
+			if (x.length>2){
 			countList.add(x, x.DECENDING_ORDER);			
+			}
 		}
 		
 		printBST();
 	}
 
 	private void printBST() {
-		Queue<Word> q = new LinkedList<Word>();
-		Stack<Word> s = new Stack<Word>();
+		
 		Iterator<Word> myIterator = countList.iterator();
 		while (myIterator.hasNext()){
 			Word x = myIterator.next();
@@ -121,15 +126,15 @@ public class A4 {
 		System.out.println("20 Most Frequent\n");
 		int counter = 0;
 		while (counter < 20 && !s.isEmpty()) {
-			System.out.println(s.pop().toString());
-			counter++;
-		};
-		System.out.println("\n------\n\n20 Least Frequent\n\n");
-		counter = 0;
-		while (counter < 20 && !q.isEmpty()) {
-			
 			System.out.println(q.remove().toString());
 			counter++;
+			
+		};
+		System.out.println("\n------\n\n20 Least Frequent");
+		counter = 0;
+		while (counter < 20 && !q.isEmpty()) {
+			System.out.println(s.pop().toString());
+			counter++;		
 		};
 		System.out.println("\n------\n\nThe longest word is " + lengthIterator.next().toString());
 		System.out.println("The average word length " + wordLength);

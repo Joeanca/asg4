@@ -86,7 +86,7 @@ public class BST<T extends Comparable<T>> {
 		if (r.left != null)
 			fill(r.left);
 		if (r.data != null)
-			nodes.add(r.getData());
+		    nodes.add(r.getData());
 		if (r.right != null)
 			fill(r.right);
 	}
