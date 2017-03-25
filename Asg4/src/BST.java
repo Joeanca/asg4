@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Stack;
 
 public class BST<T extends Comparable<T>> {
 	class BSTNode implements Comparable<BSTNode> {
@@ -47,9 +48,6 @@ public class BST<T extends Comparable<T>> {
 		}
 
 	}
-	
-
-
 
 	ArrayList<T> nodes = new ArrayList<T>();
 
@@ -68,31 +66,29 @@ public class BST<T extends Comparable<T>> {
 		size = 0;
 	}
 
-	public ArrayList get() {
+	public Iterator<T> iterator() {
+		get();
+		Iterator<T> myIterator = nodes.iterator();
+		return myIterator;
+	}
+
+	public ArrayList<T> get() {
+		visitReturn(root);
 		return nodes;
 	}
 
-	private void fill(BSTNode r) {
-		
-		fill(r.left);
-		if (r.data != null)
-			nodes.add(r.getData());
-		fill(r.right);
+	private void visitReturn(BSTNode r) {
+		if (r != null)
+			fill(r);
 	}
 
-	public BSTNode getMore(BSTNode r) {
-		if (r != null) {
-			if (r.left != null)
-				r = getMore(r.left);
-			else {
-				if (r.right != null)
-					r = getMore(r.right);
-				else
-					return r;
-			}
-		}
-		return r;
-
+	private void fill(BSTNode r) {
+		if (r.left != null)
+			fill(r.left);
+		if (r.data != null)
+			nodes.add(r.getData());
+		if (r.right != null)
+			fill(r.right);
 	}
 
 	/**
@@ -179,6 +175,35 @@ public class BST<T extends Comparable<T>> {
 		}
 	}
 
+	public void add(T d, Comparator<T> comp) {
+		BSTNode n = new BSTNode(d);
+		if (root == null) {
+			size++;
+			root = n;
+		} else {
+			add(root, n, comp);
+		}
+	}
+
+	private void add(BSTNode r, BSTNode n, Comparator<T> comp) {
+		int c = comp.compare(n.data, r.data);
+		if (c < 0) {
+			if (r.getLeft() == null) {
+				r.setLeft(n);
+				size++;
+			} else {
+				add(r.getLeft(), n, comp);
+			}
+		} else if (c > 0) {
+			if (r.getRight() == null) {
+				r.setRight(n);
+				size++;
+			} else {
+				add(r.getRight(), n, comp);
+			}
+		}
+	}
+
 	/* Implement a height method. */
 	private int height(BSTNode r) {
 		if (r == null) {
@@ -222,6 +247,11 @@ public class BST<T extends Comparable<T>> {
 				visit(r);
 				traverse(r.getRight(), travType);
 				break;
+			case INORDER2:
+				traverse(r.getLeft(), travType);
+				nodes.add(r.data);
+				traverse(r.getRight(), travType);
+				break;
 			}
 		}
 
@@ -229,21 +259,20 @@ public class BST<T extends Comparable<T>> {
 
 	private void visit(BSTNode r) {
 		if (r != null)
-			nodes.add(r.data);
-			//System.out.println(r.getData().toString());
+			// nodes.add(r.data);
+			System.out.println(r.getData().toString());
 	}
 
 	/* traverse the subtree r using level order. */
 	private void levelOrder(BSTNode r) {
-		traverse(r, 3);
-
+		traverse(r, LEVELORDER);
 	}
 
 	public void delete(T word) {
 		root = deleteNode(word, root);
 	}
 
-	public BSTNode deleteNode(T word, BSTNode r) {
+	private BSTNode deleteNode(T word, BSTNode r) {
 
 		if (r == null)
 			return r;
@@ -268,7 +297,7 @@ public class BST<T extends Comparable<T>> {
 	}
 
 	// rotate
-	public BSTNode rotate(BSTNode r) {
+	private BSTNode rotate(BSTNode r) {
 		if (r.getLeft() != null && r.getRight() != null) {
 			r.data = findMin(r.right).data;
 			r.right = (deleteNode(r.data, r.right));
