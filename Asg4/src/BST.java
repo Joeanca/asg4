@@ -50,6 +50,8 @@ public class BST<T extends Comparable<T>> {
 	}
 
 	ArrayList<T> nodes = new ArrayList<T>();
+	Stack<T> stack = new Stack<T>();
+
 
 	// The different traversal types.
 	public static final int INORDER = 0;
@@ -67,11 +69,11 @@ public class BST<T extends Comparable<T>> {
 	}
 
 	public Iterator<T> iterator() {
-		get();
+		visitReturn(root);
 		Iterator<T> myIterator = nodes.iterator();
 		return myIterator;
-	}
-
+	}	
+	
 	public ArrayList<T> get() {
 		visitReturn(root);
 		return nodes;
@@ -87,6 +89,7 @@ public class BST<T extends Comparable<T>> {
 			fill(r.left);
 		if (r.data != null)
 		    nodes.add(r.getData());
+			stack.push(r.data);
 		if (r.right != null)
 			fill(r.right);
 	}

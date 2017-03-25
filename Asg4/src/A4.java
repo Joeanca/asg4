@@ -43,7 +43,7 @@ public class A4 {
 		// natural(alphabetical) ordering of the words
 		try {
 
-			FileInputStream file = new FileInputStream("inp3.txt");
+			FileInputStream file = new FileInputStream("inp5.txt");
 			// FileReader file = new FileReader("inp3.txt");
 			// inp = new Scanner(System.in, "UTF-8");
 			inp = new Scanner(file, "UTF-8");
@@ -87,9 +87,7 @@ public class A4 {
 		int totalLength = 0;
 		for (Word x : nodes) {
 			totalLength+=x.length;
-			if (x.length>2){
 			lengthList.add(x, x.LENGTH_ORDER);
-			}
 		}
 		wordLength = totalLength/lengthList.size();
 		buildCountList();
@@ -99,7 +97,7 @@ public class A4 {
 	private void buildCountList() {
 		
 		for (Word x : nodes) {
-			if (x.length>2){
+			if (x.count>2){
 			countList.add(x, x.DECENDING_ORDER);			
 			}
 		}
@@ -140,6 +138,12 @@ public class A4 {
 		System.out.println("The average word length " + wordLength);
 		System.out.println("\n------\n\nAll Words");
 		wordList.inOrder();
+		
+		System.out.println("\n------\n\nAlphabetic Tree: ( Optimum Height: 7) ( Actual Height: " + wordList.height() + ")");
+		System.out.println("Frequency Tree: ( Optimum Height: 4) ( Actual Height: " + countList.height() + ")");
+		System.out.println("Length Tree: ( Optimum Height: 7) ( Actual Height: "+ lengthList.height() + ")\n\n------\n\n");
+
+
 
 	}
 }
