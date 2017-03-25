@@ -12,15 +12,15 @@ import java.util.*;
  */
 public class A4 {
 
-	private int totalCounter, stopCounter,wordLength;
+	private int totalCounter, stopCounter, wordLength, totalLength, countCounter, heightCounter;
 
-	Scanner inp;
-	ArrayList<Word> nodes;
-	BST<Word> wordList = new BST<Word>();
-	BST<Word> lengthList = new BST<Word>();
-	BST<Word> countList = new BST<Word>();
-	Queue<Word> q = new LinkedList<Word>();
-	Stack<Word> s = new Stack<Word>();
+	private Scanner inp;
+	private ArrayList<Word> nodes;
+	private BST<Word> wordList = new BST<Word>();
+	private BST<Word> lengthList = new BST<Word>();
+	private BST<Word> countList = new BST<Word>();
+	private Queue<Word> q = new LinkedList<Word>();
+	private Stack<Word> s = new Stack<Word>();
 	private String[] stopWords = { "a", "about", "all", "am", "an", "and", "any", "are", "as", "at", "be", "been",
 			"but", "by", "can", "cannot", "could", "did", "do", "does", "else", "for", "from", "get", "got", "had",
 			"has", "have", "he", "her", "hers", "him", "his", "how", "i", "if", "in", "into", "is", "it", "its", "like",
@@ -38,6 +38,9 @@ public class A4 {
 		a4.run();
 	}
 
+	/**
+	 * @param args
+	 */
 	public void run() {
 		// Read the words from the file and create a BST ordered by the
 		// natural(alphabetical) ordering of the words
@@ -70,6 +73,9 @@ public class A4 {
 		}
 	}
 
+	/**
+	 * @param args
+	 */
 	private void deleteStopWords() {
 		for (int i = 0; i < stopWords.length; i++) {
 			Word x = new Word(stopWords[i]);
@@ -81,69 +87,93 @@ public class A4 {
 		buildLenghtList();
 	}
 
+	/**
+	 * @param args
+	 */
 	private void buildLenghtList() {
 		// pull from the wordList BST and organize according to length
 		nodes = wordList.get();
-		int totalLength = 0;
+		totalLength = 0;
 		for (Word x : nodes) {
-			totalLength+=x.length;
+			totalLength += x.length;
 			lengthList.add(x, x.LENGTH_ORDER);
 		}
-		wordLength = totalLength/lengthList.size();
+		wordLength = totalLength / lengthList.size();
 		buildCountList();
 
 	}
 
-	private void buildCountList() {
-		
-		for (Word x : nodes) {
-			if (x.count>2){
-			countList.add(x, x.DECENDING_ORDER);			
-			}
+	private int calculateHeight(int remainder) {
+		while (remainder/2>=1){
+			remainder = calculateHeight(remainder/2);
+			heightCounter++;
 		}
-		
-		printBST();
+		return remainder;
+
 	}
 
-	private void printBST() {
-		
+	/**
+	 * @param args
+	 */
+	private void buildCountList() {
+
+		for (Word x : nodes) {
+			if (x.count > 2) {
+				countCounter++;
+				countList.add(x, x.DECENDING_ORDER);
+			}
+		}
+		int toDivideBy = 2;
 		Iterator<Word> myIterator = countList.iterator();
-		while (myIterator.hasNext()){
+		while (myIterator.hasNext()) {
 			Word x = myIterator.next();
 			q.add(x);
 			s.push(x);
 		}
-		
-		Iterator<Word> lengthIterator = lengthList.iterator();
 
-		
+		printBST();
+	}
+
+	/**
+	 * @param args
+	 */
+	private void printBST() {
+		// This builds the iterator for the Lenght BSTTree
+		Iterator<Word> lengthIterator = lengthList.iterator();
+		calculateHeight(countCounter);
+
+		// Starts the printing formatting for the output
 		System.out.println("------\n");
 		System.out.println("Total Words: " + totalCounter + "\nStop Words: " + stopCounter + "\nUnique Words: "
 				+ wordList.size() + "\n");
 		System.out.println("------\n");
+
+		// 20 most frequest printout
 		System.out.println("20 Most Frequent\n");
 		int counter = 0;
 		while (counter < 20 && !s.isEmpty()) {
 			System.out.println(q.remove().toString());
 			counter++;
-			
-		};
+		}
+		// 20 Most recent printout
 		System.out.println("\n------\n\n20 Least Frequent");
 		counter = 0;
 		while (counter < 20 && !q.isEmpty()) {
 			System.out.println(s.pop().toString());
-			counter++;		
-		};
+			counter++;
+		}
+		// longest word pulled from the length iterator
 		System.out.println("\n------\n\nThe longest word is " + lengthIterator.next().toString());
 		System.out.println("The average word length " + wordLength);
 		System.out.println("\n------\n\nAll Words");
 		wordList.inOrder();
-		
-		System.out.println("\n------\n\nAlphabetic Tree: ( Optimum Height: 7) ( Actual Height: " + wordList.height() + ")");
-		System.out.println("Frequency Tree: ( Optimum Height: 4) ( Actual Height: " + countList.height() + ")");
-		System.out.println("Length Tree: ( Optimum Height: 7) ( Actual Height: "+ lengthList.height() + ")\n\n------\n\n");
 
-
+		System.out.println(
+				"\n------\n\nAlphabetic Tree: ( Optimum Height: 7) ( Actual Height: " + wordList.height() + ")");
+		System.out.println(
+				"Frequency Tree: ( Optimum Height: " + heightCounter + ") ( Actual Height: " + countList.height() + ")");
+		System.out.println(
+				"Length Tree: ( Optimum Height: 7) ( Actual Height: " + lengthList.height() + ")\n\n------\n\n");
 
 	}
 }
