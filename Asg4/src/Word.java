@@ -34,7 +34,7 @@ public class Word implements Comparable<Word>// sort was working with comparable
 		return this.getWord().compareTo(other.getWord());
 	}
 
-	public static final Comparator<Word> LENGTH_ORDER = new Comparator<Word>() {
+	public  final Comparator<Word> LENGTH_ORDER = new Comparator<Word>() {
 		@Override
 		public int compare(Word o1, Word o2) {
 			int toReturn = 0;
@@ -48,7 +48,7 @@ public class Word implements Comparable<Word>// sort was working with comparable
 		}
 	};
 
-	public static final Comparator<Word> DECENDING_ORDER = new Comparator<Word>() {
+	public  final Comparator<Word> DECENDING_ORDER = new Comparator<Word>() {
 		@Override
 		public int compare(Word o1, Word o2) {
 			int toReturn = 0;

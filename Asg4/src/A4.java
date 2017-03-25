@@ -46,7 +46,7 @@ public class A4 {
 		// natural(alphabetical) ordering of the words
 		try {
 
-			FileInputStream file = new FileInputStream("inp5.txt");
+			FileInputStream file = new FileInputStream("inp2.txt");
 			// FileReader file = new FileReader("inp3.txt");
 			// inp = new Scanner(System.in, "UTF-8");
 			inp = new Scanner(file, "UTF-8");
@@ -103,15 +103,6 @@ public class A4 {
 
 	}
 
-	private int calculateHeight(int remainder) {
-		while (remainder/2>=1){
-			remainder = calculateHeight(remainder/2);
-			heightCounter++;
-		}
-		return remainder;
-
-	}
-
 	/**
 	 * @param args
 	 */
@@ -123,16 +114,40 @@ public class A4 {
 				countList.add(x, x.DECENDING_ORDER);
 			}
 		}
-		int toDivideBy = 2;
 		Iterator<Word> myIterator = countList.iterator();
 		while (myIterator.hasNext()) {
 			Word x = myIterator.next();
 			q.add(x);
 			s.push(x);
 		}
-
 		printBST();
 	}
+
+	private int countHeight(int toCount) {
+		heightCounter = 0;
+		calculateHeight(toCount);
+		return heightCounter+1;
+	}
+	
+	private int calculateHeight(int remainder) {
+		while (remainder>2){
+			remainder=remainder/2;
+			heightCounter++;
+		}
+		if (remainder==3)
+			heightCounter++;
+
+		return heightCounter;
+	}
+
+	/*private int calculateHeight(int remainder) {
+		while (remainder>=1) {
+			remainder = calculateHeight(remainder / 2);
+			if (remainder==1 || remainder>=0)
+				heightCounter++;
+		}
+		return remainder;
+	}*/
 
 	/**
 	 * @param args
@@ -140,7 +155,6 @@ public class A4 {
 	private void printBST() {
 		// This builds the iterator for the Lenght BSTTree
 		Iterator<Word> lengthIterator = lengthList.iterator();
-		calculateHeight(countCounter);
 
 		// Starts the printing formatting for the output
 		System.out.println("------\n");
@@ -168,12 +182,12 @@ public class A4 {
 		System.out.println("\n------\n\nAll Words");
 		wordList.inOrder();
 
-		System.out.println(
-				"\n------\n\nAlphabetic Tree: ( Optimum Height: 7) ( Actual Height: " + wordList.height() + ")");
-		System.out.println(
-				"Frequency Tree: ( Optimum Height: " + heightCounter + ") ( Actual Height: " + countList.height() + ")");
-		System.out.println(
-				"Length Tree: ( Optimum Height: 7) ( Actual Height: " + lengthList.height() + ")\n\n------\n\n");
+		System.out.println("\n------\n\nAlphabetic Tree: ( Optimum Height: " + countHeight(wordList.size())
+				+ ") ( Actual Height: " + wordList.height() + ")");
+		System.out.println("Frequency Tree: ( Optimum Height: " + countHeight(countList.size()) + ") ( Actual Height: "
+				+ countList.height() + ")");
+		System.out.println("Length Tree: ( Optimum Height: " + countHeight(lengthList.size()) + ") ( Actual Height: "
+				+ lengthList.height() + ")\n\n------\n\n");
 
 	}
 }

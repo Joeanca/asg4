@@ -104,7 +104,7 @@ public class BST<T extends Comparable<T>> {
 	 * Return the height of the tree.
 	 */
 	public int height() {
-		return height(root);
+		return height(root)+1;
 	}
 
 	/**
