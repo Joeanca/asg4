@@ -4,11 +4,11 @@ import java.util.*;
 
 /**
  * This is a file reader that accounts for the amount of words, removes stop
- * words predefined in an array and accounts for repeated words by keepin a
- * counter in the word class
+ * words predefined in an array and accounts for repeated words by keeping a
+ * counter in the word class, it also accounts for its lenght.
  * 
  * @author (Jorge Castano)
- * @version (Feb 05 2017)
+ * @version (Mar 25 2017)
  */
 public class A4 {
 
@@ -31,7 +31,7 @@ public class A4 {
 			"dont", "after", "before", "im", "men" };
 
 	/**
-	 * @param args
+	 * Starts here calls run to trigger multiple methods
 	 */
 	public static void main(String[] args) {
 		A4 a4 = new A4();
@@ -39,17 +39,18 @@ public class A4 {
 	}
 
 	/**
-	 * @param args
+	 * builds the alphabetical tree by reading the file provided by the user
+	 * then it calls the delete method for the stopwords to be deleted
 	 */
-	public void run() {
+	private void run() {
 		// Read the words from the file and create a BST ordered by the
 		// natural(alphabetical) ordering of the words
 		try {
 
-			FileInputStream file = new FileInputStream("inp2.txt");
+			//FileInputStream file = new FileInputStream("inp2.txt");
 			// FileReader file = new FileReader("inp3.txt");
-			// inp = new Scanner(System.in, "UTF-8");
-			inp = new Scanner(file, "UTF-8");
+			inp = new Scanner(System.in, "UTF-8");
+			//inp = new Scanner(file, "UTF-8");
 			String word = "";
 			while (inp.hasNext()) {
 				word = inp.next().toLowerCase().trim().replaceAll("[^a-z]", "");
@@ -65,7 +66,7 @@ public class A4 {
 				}
 
 			}
-			file.close();
+			inp.close();
 			deleteStopWords();
 
 		} catch (Exception e) {
@@ -74,7 +75,8 @@ public class A4 {
 	}
 
 	/**
-	 * @param args
+	 * This method is called by the run and deletes the stopwords from the alphabetical list
+	 * then calls on building the length list
 	 */
 	private void deleteStopWords() {
 		for (int i = 0; i < stopWords.length; i++) {
@@ -88,7 +90,7 @@ public class A4 {
 	}
 
 	/**
-	 * @param args
+	 * This method is called by the deleteStopWords method and builds the lengthlist
 	 */
 	private void buildLenghtList() {
 		// pull from the wordList BST and organize according to length
@@ -100,11 +102,11 @@ public class A4 {
 		}
 		wordLength = totalLength / lengthList.size();
 		buildCountList();
-
 	}
 
 	/**
-	 * @param args
+	 * This method builds the count list which only takes in words 
+	 * which have a frequency of more than 2, it fills a stack and a queue 
 	 */
 	private void buildCountList() {
 
@@ -123,12 +125,19 @@ public class A4 {
 		printBST();
 	}
 
+	/**
+	 * This method calculates the ideal height of the tree which is passed in by the final call to print
+	 * it sets a counter to 0 and calls the calculateHeight  
+	 */
 	private int countHeight(int toCount) {
 		heightCounter = 0;
 		calculateHeight(toCount);
 		return heightCounter+1;
 	}
 	
+	/**
+	 * This method calculates the ideal height of the tree which is passed in by the final call to print
+	 */	
 	private int calculateHeight(int remainder) {
 		while (remainder>2){
 			remainder=remainder/2;
@@ -150,7 +159,8 @@ public class A4 {
 	}*/
 
 	/**
-	 * @param args
+	 * This is the final method which takes all the previously calculated values and prints
+	 * according to the specifications
 	 */
 	private void printBST() {
 		// This builds the iterator for the Lenght BSTTree

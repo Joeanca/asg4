@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Stack;
 
 public class BST<T extends Comparable<T>> {
 	class BSTNode implements Comparable<BSTNode> {
@@ -48,9 +47,7 @@ public class BST<T extends Comparable<T>> {
 		}
 
 	}
-
-	ArrayList<T> nodes = new ArrayList<T>();
-	Stack<T> stack = new Stack<T>();
+	private ArrayList<T> nodes = new ArrayList<T>();
 
 	// The different traversal types.
 	public static final int INORDER = 0;
@@ -78,19 +75,18 @@ public class BST<T extends Comparable<T>> {
 		return nodes;
 	}
 
-	private void visitReturn(BSTNode r) {
-		if (r != null)
-			fill(r);
-	}
+	
 
 	private void fill(BSTNode r) {
 		if (r.left != null)
 			fill(r.left);
 		if (r.data != null)
 			nodes.add(r.getData());
-		stack.push(r.data);
 		if (r.right != null)
 			fill(r.right);
+	}private void visitReturn(BSTNode r) {
+		if (r != null)
+			fill(r);
 	}
 
 	/**
@@ -177,6 +173,9 @@ public class BST<T extends Comparable<T>> {
 		}
 	}
 
+	/**
+	 * Add element d to the tree.
+	 */
 	public void add(T d, Comparator<T> comp) {
 		BSTNode n = new BSTNode(d);
 		if (root == null) {
@@ -187,6 +186,7 @@ public class BST<T extends Comparable<T>> {
 		}
 	}
 
+	/* Do the actual add of node r to tree rooted at n with order determined by custom comparator*/
 	private void add(BSTNode r, BSTNode n, Comparator<T> comp) {
 		int c = comp.compare(n.data, r.data);
 		if (c < 0) {
